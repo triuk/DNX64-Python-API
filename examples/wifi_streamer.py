@@ -2,12 +2,13 @@ import importlib
 import math
 import threading
 import time
+from pathlib import Path
 
 import cv2
 
 # Global variables
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 960
-DNX64_PATH = "C:\\Program Files\\DNX64\\DNX64.dll"
+DNX64_PATH = str(Path(__file__).resolve().parents[1] / "DNX64" / "DNX64.dll")
 DINO_STREAMER = "http://10.10.10.254:8080/?action=stream"
 DEVICE_INDEX = 90  # Use 90 for WF-10 / WF-20 Dino-Lite Streamer
 # Buffer time for Dino-Lite to return value

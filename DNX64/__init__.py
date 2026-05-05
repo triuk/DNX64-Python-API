@@ -1,9 +1,12 @@
 import ctypes
+import os
+from pathlib import Path
 from typing import Callable, List, Tuple
 
 # Global variables
 VID_POINTERS: int = 5
 VID_PARAMS: int = 4
+DEFAULT_DNX64_PATH: Path = Path(__file__).resolve().parent / "DNX64.dll"
 METHOD_SIGNATURES: dict = {
     "Init": ([], ctypes.c_bool),
     "EnableMicroTouch": ([ctypes.c_bool], ctypes.c_bool),
@@ -58,13 +61,21 @@ METHOD_SIGNATURES: dict = {
 
 
 class DNX64:
-    def __init__(self, dll_path: str) -> None:
+    def __init__(self, dll_path: str | None = None) -> None:
         """
         Initialize the DNX64 class.
 
         Parameters:
-            dll_path (str): Path to the DNX64.dll library file.
+            dll_path (str | None): Path to the DNX64.dll library file.
+                Defaults to DNX64.dll in this package directory.
         """
+        dll_path = str(dll_path or DEFAULT_DNX64_PATH)
+        dll_dir = str(Path(dll_path).resolve().parent)
+
+        self._dll_directory = None
+        if hasattr(os, "add_dll_directory"):
+            self._dll_directory = os.add_dll_directory(dll_dir)
+
         self.dnx64 = ctypes.CDLL(dll_path)
         self.setup()
 

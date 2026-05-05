@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from win32api import HIWORD, LOWORD, GetFileVersionInfo
 
 
@@ -9,6 +11,6 @@ def get_dll_version(filename):
 
 
 if __name__ == "__main__":
-    DNX64_PATH = "C:\\Program Files\\DNX64\\DNX64.dll"
+    DNX64_PATH = Path(__file__).resolve().parent / "DNX64" / "DNX64.dll"
     major_v, minor_v, build_v, revision_v = get_dll_version(DNX64_PATH)
     print(f"DNX64.dll version: {major_v}.{minor_v}.{build_v}.{revision_v}")
